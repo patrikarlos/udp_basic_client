@@ -12,6 +12,7 @@
 // Enable if you want debugging to be printed, see examble below.
 // Alternative, pass 
 #define DEBUG
+#define DEBUG2
 
 
 
@@ -44,15 +45,34 @@ int main(int argc, char* argv[]) {
 #ifdef DEBUG2 
   printf("last argv[1] == %s \n",argv[1]);
 #endif
+
+  if (Desthost == NULL || Destport == NULL){
+    printf("Missing host or port.\n");
+    exit(1);
+  };
+
+
+
+  printf("Desthost = %p len = %d \n",Desthost, strlen(Desthost));
+  printf("Destport = %p len = %d \n",Destport, strlen(Destport));
+
+  
+
   
   // *Desthost now points to a sting holding whatever came before the delimiter, ':'.
   // *Dstport points to whatever string came after the delimiter. 
+
+
+
   
   /* Do magic */
   int port=atoi(Destport);
 #ifdef DEBUG 
   printf("Host %s, and port %d.\n",Desthost,port);
 #endif
+  
+  
+
   
   // Skapa socket
 
@@ -130,11 +150,18 @@ int main(int argc, char* argv[]) {
   
   printf("myBugger => sizeof () = %d \n", sizeof(myBugger));
   printf("myBugger => strlen () = %d \n", strlen(myBugger));
-  
+
+
+  rv=connect(sockfd,  p->ai_addr,p->ai_addrlen);
+  printf("rv = %d \n",rv);
 	 
+  sentbytes=send(sockfd,&myBugger,sizeof(myBugger), NULL);
+  printf("Skickade (send) %d bytes.\n", sentbytes);
+
+
   
   sentbytes=sendto(sockfd,&myBugger,sizeof(myBugger), NULL, p->ai_addr,p->ai_addrlen);
-  printf("Skickade %d bytes.\n", sentbytes);
+  printf("Skickade (sendto ) %d bytes.\n", sentbytes);
   
 
   struct __attribute__((__packed__))  myStruct {
